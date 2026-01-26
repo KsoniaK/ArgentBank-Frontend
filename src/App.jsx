@@ -1,45 +1,31 @@
-import { useState, useEffect } from "react";
+import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
 import Home from "./pages/Home";
-import SignIn from "./pages/SignIn";
+import Login from "./pages/SignIn";
 import Profile from "./pages/Profile";
+import TransactionsByAccount from "./pages/TransactionsByAccount";
+import TransactionRow from "./components/TransactionRow";
+import Header from "./layouts/Header";
+import Footer from "./layouts/Footer";
 import "./assets/css/main.css";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [username, setUsername] = useState("");
-
-  useEffect(() => {
-    // Vérifie le login après le montage
-    const checkLogin = () => {
-      const token = localStorage.getItem("token");
-      const storedUsername = localStorage.getItem("username");
-      if (token) {
-        setIsLoggedIn(true);
-        setUsername(storedUsername || "");
-      }
-    };
-
-    setTimeout(checkLogin, 0); // évite le warning React
-  }, []);
-
   return (
     <>
-      <Header
-        isLoggedIn={isLoggedIn}
-        username={username}
-        setIsLoggedIn={setIsLoggedIn}
-        setUsername={setUsername}
-      />
+      <Header />
       <Routes>
+        {/* Pages publiques */}
         <Route path="/" element={<Home />} />
-        <Route
-          path="/login"
-          element={<SignIn setIsLoggedIn={setIsLoggedIn} setUsername={setUsername} />}
-        />
+        <Route path="/login" element={<Login />} />
+
+        {/* Page Profile avec la liste des comptes */}
         <Route path="/profile" element={<Profile />} />
+
+        {/* Page TransactionsByAccount indépendante */}
+        <Route path="/profile/transactions/:accountType" element={<TransactionsByAccount />} />
+
+        {/* Détail d'une transaction */}
+        <Route path="/profile/transactions/:accountType/details/:transactionId" element={<TransactionRow />} />
       </Routes>
       <Footer />
     </>

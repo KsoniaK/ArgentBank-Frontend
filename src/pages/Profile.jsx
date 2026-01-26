@@ -1,15 +1,30 @@
 import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { updateUserProfile } from "../store/authSlice";
+import TransactionsByCategory from "../components/TransactionsByCategory";
+import {store} from "../store/store";
+
+// Comptes fictifs
+const fakeAccounts = [
+  { id: 1, title: "Argent Bank Checking", number: "x8349", balance: 2082.79, type: "checking" },
+  { id: 2, title: "Argent Bank Savings", number: "x6712", balance: 10928.42, type: "savings" },
+  { id: 3, title: "Argent Bank Credit Card", number: "x8349", balance: 184.3, type: "credit" },
+];
 
 function Profile() {
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state.auth.token);
+  const reduxUser = useSelector((state) => state.auth.user);
+
   const [user, setUser] = useState(null);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchProfile = async () => {
-      const token = localStorage.getItem("token");
-
       if (!token) {
-        setError("Vous devez être connecté !");
+        setError("You must be logged in!");
         return;
       }
 
@@ -24,78 +39,107 @@ function Profile() {
 
         const data = await res.json();
 
-        if (!res.ok) {
-          setError(data.message || "Erreur lors de la récupération du profil");
-          return;
-        }
+        if (res.ok) {
+          setUser(data.body);
+          setFirstName(data.body.firstName || "");
+          setLastName(data.body.lastName || "");
 
-        // ✅ ICI la vraie correction
-        setUser(data.body);
-        setError(""); // nettoyage si tout va bien
+          dispatch(updateUserProfile({
+            firstName: data.body.firstName || "",
+            lastName: data.body.lastName || "",
+          }));
+          console.log("Store user:", store.getState().auth.user);
+        } else {
+          setError(data.message || "Error fetching profile");
+        }
       } catch (err) {
+        setError("Server error");
         console.error(err);
-        setError("Erreur serveur");
       }
     };
 
     fetchProfile();
-  }, []);
+  }, [token, dispatch]);
 
-  // --- RENDU ---
 
-  if (error) {
-    return <p style={{ color: "red" }}>{error}</p>;
-  }
+  const handleSave = async () => {
+    if (!token) return;
 
-  if (!user) {
-    return <p>Chargement...</p>;
-  }
+    try {
+      const res = await fetch("http://localhost:3001/api/v1/user/profile", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ firstName, lastName }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        // On met à jour Redux pour le Header
+        dispatch(updateUserProfile({
+          firstName,
+          lastName,
+        }));
+
+        // On reste sur les mêmes valeurs pour les inputs
+        setError("");
+      } else {
+        setError(data.message || "Error updating profile");
+      }
+    } catch (err) {
+      setError("Server error");
+      console.error(err);
+    }
+  };
+
+  const handleCancel = () => {
+    // On remet l'input à la valeur actuelle dans Redux
+    setFirstName(reduxUser.firstName || "");
+    setLastName(reduxUser.lastName || "");
+  };
+
+  if (error) return <p style={{ color: "red" }}>{error}</p>;
+  if (!user) return <p>Loading...</p>;
 
   return (
     <main className="main bg-dark">
       <div className="header">
         <h1>
           Welcome back<br />
-          {user.firstName} {user.lastName}!
+          {/* {firstName || lastName
+            ? `${firstName} ${lastName}`
+            : `${reduxUser.firstName || ""} ${reduxUser.lastName || ""}`}
+          ! */}
         </h1>
-        <button className="edit-button">Edit Name</button>
+          <div style={{ marginTop: "10px" }}>
+            <input
+              type="text"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              placeholder="First Name"
+            />
+            <input
+              type="text"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              placeholder="Last Name"
+            />
+            <button onClick={handleSave} style={{ marginLeft: "5px" }}>
+              Save
+            </button>
+            <button onClick={handleCancel} style={{ marginLeft: "5px" }}>
+              Cancel
+            </button>
+          </div>
       </div>
 
       <h2 className="sr-only">Accounts</h2>
-
-      {/* Comptes statiques (comme la maquette) */}
-      <section className="account">
-        <div className="account-content-wrapper">
-          <h3 className="account-title">Argent Bank Checking (x8349)</h3>
-          <p className="account-amount">$2,082.79</p>
-          <p className="account-amount-description">Available Balance</p>
-        </div>
-        <div className="account-content-wrapper cta">
-          <button className="transaction-button">View transactions</button>
-        </div>
-      </section>
-
-      <section className="account">
-        <div className="account-content-wrapper">
-          <h3 className="account-title">Argent Bank Savings (x6712)</h3>
-          <p className="account-amount">$10,928.42</p>
-          <p className="account-amount-description">Available Balance</p>
-        </div>
-        <div className="account-content-wrapper cta">
-          <button className="transaction-button">View transactions</button>
-        </div>
-      </section>
-
-      <section className="account">
-        <div className="account-content-wrapper">
-          <h3 className="account-title">Argent Bank Credit Card (x8349)</h3>
-          <p className="account-amount">$184.30</p>
-          <p className="account-amount-description">Current Balance</p>
-        </div>
-        <div className="account-content-wrapper cta">
-          <button className="transaction-button">View transactions</button>
-        </div>
-      </section>
+      {fakeAccounts.map((acc) => (
+        <TransactionsByCategory key={acc.id} account={acc} />
+      ))}
     </main>
   );
 }

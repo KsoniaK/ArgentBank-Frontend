@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "../store/authSlice";
 
-function SignIn({ setIsLoggedIn, setUsername }) {
+function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,13 +28,19 @@ function SignIn({ setIsLoggedIn, setUsername }) {
         return;
       }
 
-      // Sauvegarde token et username
+      // Sauvegarde token
       localStorage.setItem("token", data.body.token);
-      localStorage.setItem("username", data.body.userName);
 
-      // Met à jour l'état parent
-      setIsLoggedIn(true);
-      setUsername(data.body.userName);
+      // Met à jour Redux
+      dispatch(
+        loginSuccess({
+          token: data.body.token,
+          user: {
+            firstName: data.body.firstName || "",
+            lastName: data.body.lastName || "",
+          },
+        })
+      );
 
       navigate("/profile");
     } catch (err) {

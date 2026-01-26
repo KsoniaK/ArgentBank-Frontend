@@ -1,15 +1,21 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../store/authSlice";
 import argentBankLogo from "../assets/img/argentBankLogo.png";
 
-function Header({ isLoggedIn = false, username = "", setIsLoggedIn, setUsername }) {
+function Header() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  // const user = useSelector((state) => state.auth.user);
+  const firstName = useSelector((state) => state.auth.user.firstName);
+  console.log("Redux user firstname:", firstName);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  console.log("Header render, firstName:", firstName);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("username");
-    setIsLoggedIn(false);
-    setUsername("");
+    dispatch(logout());
     navigate("/login");
   };
 
@@ -32,10 +38,12 @@ function Header({ isLoggedIn = false, username = "", setIsLoggedIn, setUsername 
           </Link>
         ) : (
           <>
+          <Link to="/profile">
             <span className="main-nav-item">
               <i className="fa fa-user-circle"></i>
-              {username}
+              {firstName}
             </span>
+          </Link>
             <button
               className="main-nav-item"
               onClick={handleLogout}
