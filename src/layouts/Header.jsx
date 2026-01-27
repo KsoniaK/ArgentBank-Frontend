@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../store/authSlice";
 import argentBankLogo from "../assets/img/argentBankLogo.png";
+import profilePicture from "../assets/img/profile-picture.png";
+import logoutImg from "../assets/img/logout.png";
 
 function Header() {
   const navigate = useNavigate();
@@ -30,19 +32,21 @@ function Header() {
         <h1 className="sr-only">Argent Bank</h1>
       </Link>
 
-      <div>
+      <div className="user-login_container">
         {!isLoggedIn ? (
           <Link className="main-nav-item" to="/login">
             <i className="fa fa-user-circle"></i>
-            Sign In
+            <span>Sign In</span>
           </Link>
         ) : (
           <>
           <Link to="/profile">
-            <span className="main-nav-item">
-              <i className="fa fa-user-circle"></i>
-              {firstName}
-            </span>
+                <img
+                  className="login-img"
+                  src={profilePicture}
+                  alt="Login"
+                />
+                <span>{firstName}</span>
           </Link>
             <button
               className="main-nav-item"
@@ -55,8 +59,12 @@ function Header() {
                 font: "inherit",
               }}
             >
-              <i className="fa fa-sign-out"></i>
-              Sign Out
+                  <img
+                  className="logout-img"
+                  src={logoutImg}
+                  alt="Logout"
+                  />
+              <span>Sign Out</span>
             </button>
           </>
         )}

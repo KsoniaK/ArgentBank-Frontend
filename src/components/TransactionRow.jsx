@@ -1,4 +1,7 @@
 import { useState } from "react";
+import pen from "../assets/img/pen.png";
+import arrowDown from "../assets/img/down-arrow.png";
+import arrowUp from "../assets/img/arrow-up.png";
 
 // Toutes les catégories possibles
 const categoryOptions = [
@@ -21,6 +24,9 @@ function TransactionRow({ transaction }) {
   const [isEditingCategory, setIsEditingCategory] = useState(false);
   const [isEditingNotes, setIsEditingNotes] = useState(false);
 
+  // const arrowDownImg = `<img src=${arrowDown} alt="more"/>`
+  // const arrowUpImg = `<img src=${arrowUp} alt="edit"/>`
+
   const saveNotes = () => {
     setIsEditingNotes(false);
     // Ici tu peux envoyer la mise à jour au backend si besoin
@@ -30,7 +36,16 @@ function TransactionRow({ transaction }) {
     <>
       {/* Ligne principale */}
       <tr onClick={() => setOpen(!open)}>
-        <td>{open ? "▲" : "▼"}</td>
+        <td>
+          {
+            open ?
+            <img src={arrowUp} alt="edit"/>
+            :
+            <img src={arrowDown} alt="edit"/>
+          }
+        </td>
+        {/* <td>{open ? arrowUp : arrowDown}</td> */}
+        {/* <td>{open ? "▲" : "▼"}</td> */}
         <td>{transaction.date}</td>
         <td>{transaction.description}</td>
         <td>{transaction.amount}</td>
@@ -70,7 +85,10 @@ function TransactionRow({ transaction }) {
                 }}
                 style={{ marginLeft: "8px" }}
               >
-                ✏️
+              <img
+                src={pen}
+                alt="edit"
+              />
               </button>
             </div>
 
@@ -86,7 +104,7 @@ function TransactionRow({ transaction }) {
                   autoFocus
                 />
               ) : (
-                <span>{notes || "—"}</span>
+                <span>{notes || ""}</span>
               )}
               <button
                 onClick={(e) => {
@@ -95,7 +113,10 @@ function TransactionRow({ transaction }) {
                 }}
                 style={{ marginLeft: "8px" }}
               >
-                ✏️
+              <img
+                src={pen}
+                alt="plus"
+              />
               </button>
             </div>
           </td>

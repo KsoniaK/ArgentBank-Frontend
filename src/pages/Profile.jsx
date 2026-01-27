@@ -115,24 +115,34 @@ function Profile() {
           ! */}
         </h1>
           <div style={{ marginTop: "10px" }}>
-            <input
-              type="text"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              placeholder="First Name"
-            />
-            <input
-              type="text"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              placeholder="Last Name"
-            />
-            <button onClick={handleSave} style={{ marginLeft: "5px" }}>
-              Save
-            </button>
-            <button onClick={handleCancel} style={{ marginLeft: "5px" }}>
-              Cancel
-            </button>
+            <div>
+              <input
+                className="nameInput"
+                type="text"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                placeholder="First Name"
+              />
+              <input
+                className="nameInput"
+                type="text"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                placeholder="Last Name"
+              />
+            </div>
+            <div className="nameContainer">
+              <button 
+                onClick={handleSave}
+                style={{ marginLeft: "5px" }}
+                className="nameChangeButton"
+                >
+                Save
+              </button>
+              <button onClick={handleCancel} style={{ marginLeft: "5px" }} className="nameChangeButton">
+                Cancel
+              </button>
+            </div>
           </div>
       </div>
 

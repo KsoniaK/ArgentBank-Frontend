@@ -43,8 +43,8 @@ function TransactionsByAccount() {
   if (!account) return <p>Account not found</p>;
 
   return (
-    <main className="main bg-dark">
-    <section className="account">
+    <main className="main bg-dark transaction-page-main">
+    <section className="account transaction-page-section">
       <div className="account-content-wrapper">
         <h3 className="account-title">
           {account.title} ({account.number})
@@ -54,14 +54,9 @@ function TransactionsByAccount() {
         </p>
         <p className="account-amount-description">Available Balance</p>
       </div>
-      <div className="account-content-wrapper cta">
-        <Link to={`/profile/transactions/${account.type}`}>
-          <button className="transaction-button">View Transactions</button>
-        </Link>
-      </div>
     </section>
     <Link to="/profile">
-      <button style={{ marginTop: "10px" }}>Back to Profile</button>
+      <button className="back-home-button" style={{ marginTop: "10px" }}>Back to Profile</button>
     </Link>
 
       <section className="transactions">
@@ -70,10 +65,10 @@ function TransactionsByAccount() {
           <thead>
             <tr>
               <th></th>
-              <th>Date</th>
-              <th>Description</th>
-              <th>Amount</th>
-              <th>Balance</th>
+              <th>DATE</th>
+              <th>DESCRIPTION</th>
+              <th>AMOUNT</th>
+              <th>BALANCE</th>
             </tr>
           </thead>
           <tbody>
