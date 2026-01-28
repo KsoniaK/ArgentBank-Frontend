@@ -61,22 +61,24 @@ function TransactionsByAccount() {
 
       <section className="transactions">
         <h2 className="sr-only">Transactions</h2>
-        <table className="transaction-table">
-          <thead>
-            <tr>
-              <th></th>
-              <th>DATE</th>
-              <th>DESCRIPTION</th>
-              <th>AMOUNT</th>
-              <th>BALANCE</th>
-            </tr>
-          </thead>
-          <tbody>
-            {account.transactions.map(tx => (
-              <TransactionRow key={tx.id} transaction={tx} />
-            ))}
-          </tbody>
-        </table>
+        <div className="table-wrapper">
+          <table className="transaction-table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>DATE</th>
+                <th>DESCRIPTION</th>
+                <th>AMOUNT</th>
+                <th>BALANCE</th>
+              </tr>
+            </thead>
+            <tbody>
+              {account.transactions.map(tx => (
+                <TransactionRow key={tx.id} transaction={tx} />
+              ))}
+            </tbody>
+          </table>
+        </div>
       </section>
     </main>
   );

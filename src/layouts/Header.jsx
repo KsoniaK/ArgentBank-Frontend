@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../store/authSlice";
 import argentBankLogo from "../assets/img/argentBankLogo.png";
@@ -21,8 +21,12 @@ function Header() {
     navigate("/login");
   };
 
+  const location = useLocation();
+  const isProfilePage = location.pathname.startsWith("/login");
+  // const isTransactionsPage = location.pathname.includes("/transactions");
+
   return (
-    <nav className="main-nav">
+    <nav className="main-nav" data-page={isProfilePage ? "login" : "default"}>
       <Link className="main-nav-logo" to="/">
         <img
           className="main-nav-logo-image"
