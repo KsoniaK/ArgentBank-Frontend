@@ -10,20 +10,20 @@ function Header() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // const user = useSelector((state) => state.auth.user);
   const firstName = useSelector((state) => state.auth.user.firstName);
   console.log("Redux user firstname:", firstName);
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   console.log("Header render, firstName:", firstName);
 
+  // Déclenche l’action Redux logout pour réinitialiser le store.
   const handleLogout = () => {
     dispatch(logout());
     navigate("/login");
   };
 
+  // Permet de savoir si on est sur la page de login pour ajuster le style ou certains éléments.
   const location = useLocation();
   const isProfilePage = location.pathname.startsWith("/login");
-  // const isTransactionsPage = location.pathname.includes("/transactions");
 
   return (
     <nav className="main-nav" data-page={isProfilePage ? "login" : "default"}>

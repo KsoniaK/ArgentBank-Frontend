@@ -1,7 +1,9 @@
-// src/store/transactionSlice.js
+// gère l’état des transactions dans projet
+
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+  // Initialisé vide, il sera rempli après un fetch depuis l’API ou via addTransaction
   transactions: [],
 };
 

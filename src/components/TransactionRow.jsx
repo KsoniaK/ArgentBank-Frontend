@@ -24,12 +24,9 @@ function TransactionRow({ transaction }) {
   const [isEditingCategory, setIsEditingCategory] = useState(false);
   const [isEditingNotes, setIsEditingNotes] = useState(false);
 
-  // const arrowDownImg = `<img src=${arrowDown} alt="more"/>`
-  // const arrowUpImg = `<img src=${arrowUp} alt="edit"/>`
-
   const saveNotes = () => {
     setIsEditingNotes(false);
-    // Ici tu peux envoyer la mise à jour au backend si besoin
+    // Ici on peux envoyer la mise à jour au backend si besoin
   };
 
   return (
@@ -44,8 +41,6 @@ function TransactionRow({ transaction }) {
             <img src={arrowDown} alt="edit"/>
           }
         </td>
-        {/* <td>{open ? arrowUp : arrowDown}</td> */}
-        {/* <td>{open ? "▲" : "▼"}</td> */}
         <td>{transaction.date}</td>
         <td>{transaction.description}</td>
         <td>{transaction.amount}</td>

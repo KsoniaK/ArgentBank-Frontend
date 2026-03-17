@@ -1,8 +1,4 @@
 import React from "react";
-import Feature from "../components/Feature"; // si tu as un composant Feature
-import Header from "../layouts/Header";
-import Footer from "../layouts/Footer";
-// import argentBankLogo from "../assets/img/argentBankLogo.png";
 import chatIcon from "../assets/img/icon-chat.png";
 import moneyIcon from "../assets/img/icon-money.png";
 import securityIcon from "../assets/img/icon-security.png";

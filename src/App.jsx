@@ -1,3 +1,5 @@
+// Utilisation de React Router v6 (Routes + Route) pour gérer la navigation SPA.
+
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";

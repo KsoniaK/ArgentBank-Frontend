@@ -37,9 +37,11 @@ const accounts = [
 ];
 
 function TransactionsByAccount() {
+  // useParams → récupère accountType depuis l’URL (ex: /transactions/checking).
   const { accountType } = useParams();
+  // Cherche le compte correspondant dans le tableau accounts.
   const account = accounts.find(acc => acc.type === accountType);
-
+  // Si aucun compte trouvé → message d’erreur simple.
   if (!account) return <p>Account not found</p>;
 
   return (
