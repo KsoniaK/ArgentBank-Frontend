@@ -1,3 +1,4 @@
+/* global process */
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -20,7 +21,7 @@ function SignIn() {
     // On commence un bloc try/catch pour gérer les erreurs éventuelles lors de l’appel réseau (capturer les erreurs côté front)
     try {
       // Appel réseau au backend pour se connecter
-      const response = await fetch("http://localhost:3001/api/v1/user/login", {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/user/login`, {
         // method: "POST" : on envoie des données pour créer une session
         method: "POST",
         // headers : on indique que le contenu envoyé est en JSON.

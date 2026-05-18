@@ -1,3 +1,4 @@
+/* global process */
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { updateUserProfile } from "../store/authSlice";
@@ -33,7 +34,7 @@ function Profile() {
 
       // Commence le bloc try/catch pour gérer les erreurs réseau ou autres exceptions
       try {
-        const res = await fetch("http://localhost:3001/api/v1/user/profile", {
+        const res = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/user/profile`, {
           // Appel GET à l’API /profile pour récupérer les infos utilisateur = on demande simplement des données, on ne modifie rien.
           method: "GET",
           headers: {
@@ -87,7 +88,7 @@ function Profile() {
     // un bloc try/catch pour gérer les erreurs réseau ou serveur.
     try {
       // Elle est async parce qu’elle contient un appel API avec await
-      const res = await fetch("http://localhost:3001/api/v1/user/profile", {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/v1/user/profile`, {
         // PUT sert à mettre à jour une ressource existante
         method: "PUT",
         headers: {
